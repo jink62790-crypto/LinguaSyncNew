@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinguaSync - Audio Learning</title>
+    <!-- Tailwind CSS (CDN for simplicity) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Error Handler -->
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        console.error("Global Error:", message, error);
+        const root = document.getElementById('root');
+        // Only show error UI if React hasn't mounted
+        if (root && root.innerText.includes('Loading')) {
+           root.innerHTML = `
+            <div style="padding: 2rem; color: #ef4444; font-family: sans-serif; text-align: center;">
+              <h2 style="font-weight: bold; margin-bottom: 1rem;">Startup Error</h2>
+              <p>The application failed to start.</p>
+              <div style="background: #fef2f2; padding: 1rem; margin-top:1rem; text-align: left; font-size: 0.8rem; border: 1px solid #fee2e2;">
+                ${message}
+              </div>
+            </div>
+          `;
+        }
+      };
+      
+      // Polyfills for browser environment
+      window.process = window.process || { env: { NODE_ENV: 'production' } };
+    </script>
+    
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      html { scroll-behavior: smooth; }
+    </style>
+</head>
+  <body class="bg-slate-50 text-slate-900 font-sans antialiased h-screen overflow-hidden">
+    <div id="root" class="h-full w-full flex flex-col items-center justify-center text-slate-400 gap-4">
+      <div class="animate-pulse text-lg font-medium">Loading LinguaSync...</div>
+    </div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
