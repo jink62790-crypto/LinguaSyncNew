@@ -2,43 +2,47 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>LinguaSync - Audio Learning</title>
-    <!-- Tailwind CSS (CDN for simplicity) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Error Handler -->
+    <!-- Error Handler for Production Debugging -->
     <script>
       window.onerror = function(message, source, lineno, colno, error) {
+        // Ignore resizing loops
+        if (message.includes('ResizeObserver')) return;
+        
         console.error("Global Error:", message, error);
         const root = document.getElementById('root');
-        // Only show error UI if React hasn't mounted
-        if (root && root.innerText.includes('Loading')) {
+        // Only show fatal error UI if React has not taken over yet
+        if (root && (root.innerText.includes('Loading') || root.children.length === 0)) {
            root.innerHTML = `
-            <div style="padding: 2rem; color: #ef4444; font-family: sans-serif; text-align: center;">
-              <h2 style="font-weight: bold; margin-bottom: 1rem;">Startup Error</h2>
-              <p>The application failed to start.</p>
-              <div style="background: #fef2f2; padding: 1rem; margin-top:1rem; text-align: left; font-size: 0.8rem; border: 1px solid #fee2e2;">
+            <div style="padding: 2rem; color: #ef4444; font-family: sans-serif; text-align: center; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+              <h2 style="font-weight: bold; margin-bottom: 1rem; font-size: 1.25rem;">Application Startup Failed</h2>
+              <p style="color: #374151; margin-bottom: 1rem;">Please check the console for details or refresh.</p>
+              <div style="background: #fef2f2; padding: 1rem; text-align: left; font-size: 0.8rem; border: 1px solid #fee2e2; border-radius: 0.5rem; max-width: 90%;">
                 ${message}
               </div>
             </div>
           `;
         }
       };
-      
-      // Polyfills for browser environment
-      window.process = window.process || { env: { NODE_ENV: 'production' } };
     </script>
     
     <style>
       .no-scrollbar::-webkit-scrollbar { display: none; }
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       html { scroll-behavior: smooth; }
+      body { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
-  <body class="bg-slate-50 text-slate-900 font-sans antialiased h-screen overflow-hidden">
+  <body class="bg-slate-50 text-slate-900 font-sans antialiased h-screen overflow-hidden selection:bg-blue-100 selection:text-blue-700">
     <div id="root" class="h-full w-full flex flex-col items-center justify-center text-slate-400 gap-4">
-      <div class="animate-pulse text-lg font-medium">Loading LinguaSync...</div>
+      <div class="animate-pulse flex flex-col items-center gap-3">
+        <div class="w-12 h-12 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin"></div>
+        <div class="text-sm font-medium tracking-wide">LOADING LINGUASYNC</div>
+      </div>
     </div>
     <script type="module" src="/index.tsx"></script>
   </body>
